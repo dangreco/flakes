@@ -89,7 +89,7 @@
               ];
             };
 
-            extra = f pkgs;
+            extra = f system pkgs;
             config = deepMerge base extra;
           in
           {
