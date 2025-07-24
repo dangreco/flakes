@@ -1,5 +1,20 @@
 {
   "nodes": {
+    "env": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "path": "./env",
+        "type": "path"
+      },
+      "original": {
+        "path": "./env",
+        "type": "path"
+      },
+      "parent": []
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -36,8 +51,7 @@
     },
     "root": {
       "inputs": {
-        "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs"
+        "env": "env"
       }
     },
     "systems": {
