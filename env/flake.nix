@@ -33,9 +33,8 @@
                   rValue
               ) rhs);
 
-            _runtime = pkgs.writeShellApplication {
-              name = "_runtime";
-              runtimeInputs = [ ];
+            __runtime = pkgs.writeShellApplication {
+              name = "runtime";
               text = ''
                 #!/usr/bin/env bash
                 set -euo pipefail
@@ -50,14 +49,13 @@
               '';
             };
 
-            _act = pkgs.writeShellApplication {
-              name = "_act";
-              runtimeInputs = [ ];
+            __act = pkgs.writeShellApplication {
+              name = "act";
               text = ''
                 #!/usr/bin/env bash
                 set -euo pipefail
 
-                rt=''$({ _runtime 2>/dev/null || true; } | head -n 1)
+                rt=''$({ runtime 2>/dev/null || true; } | head -n 1)
                 [[ ''$rt ]] || { echo "No container runtime found" >&2; exit 1; }
 
                 case ''$rt in
@@ -71,21 +69,21 @@
 
                 [[ ''${socket:-} ]] || { echo "No container socket found for runtime: ''$rt" >&2; exit 1; }
 
-                exec env DOCKER_HOST="unix://''$socket" act "''$@"
+                exec env DOCKER_HOST="unix://''$socket" ${pkgs.act}/bin/act "''$@"
               '';
             };
 
             base = {
               nativeBuildInputs = with pkgs; [
-                _runtime
-                _act
-
                 gh
                 git
                 act
                 just
                 nixd
                 nixfmt-rfc-style
+
+                __runtime
+                __act
               ];
             };
 
