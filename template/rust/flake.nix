@@ -104,6 +104,11 @@
                 ${config.pre-commit.shellHook}
               '';
             };
+
+            build = pkgs.mkShell {
+              buildInputs = [ rust.package ];
+              nativeBuildInputs = with pkgs; [ openssl ];
+            };
           };
         };
     };

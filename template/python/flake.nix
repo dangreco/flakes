@@ -104,6 +104,13 @@
                 ${config.pre-commit.shellHook}
               '';
             };
+
+            build = pkgs.mkShell {
+              buildInputs = with pkgs; [
+                ty
+                python.package
+              ];
+            };
           };
         };
     };
