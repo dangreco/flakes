@@ -30,6 +30,7 @@
       ];
       perSystem =
         {
+          lib,
           config,
           system,
           pkgs,
@@ -68,8 +69,20 @@
           pre-commit.settings.hooks = {
             nixfmt.enable = true;
             taplo.enable = true;
-            clippy.enable = true;
-            rustfmt.enable = true;
+            _rustfmt = {
+              enable = true;
+              name = "rusfmt";
+              files = "\\.rs$";
+              entry = "${rust.package}/bin/cargo fmt --all";
+              pass_filenames = false;
+            };
+            _clippy = {
+              enable = true;
+              name = "clippy";
+              files = "\\.rs$";
+              entry = "${rust.package}/bin/cargo clippy --offline --all-features -- -D warnings";
+              pass_filenames = false;
+            };
           };
 
           devShells = {
