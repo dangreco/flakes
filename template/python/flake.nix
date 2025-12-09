@@ -1,5 +1,5 @@
 {
-  description = "dangreco/env environment";
+  description = "Description for the project";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -30,18 +30,55 @@
           pkgs,
           ...
         }:
+        let
+          python = rec {
+            version = "3.13";
+            package = pkgs."python${builtins.replaceStrings [ "." ] [ "" ] version}".withPackages (
+              ps: with ps; [
+                uv
+                ruff
+              ]
+            );
+          };
+        in
         {
           files.files = [
             {
               path_ = ".zed/settings.json";
-              drv = pkgs.writers.writeJSON "settings.json" { };
+              drv = pkgs.writers.writeJSON "settings.json" {
+                lsp.ty = {
+                  binary = "${pkgs.ty}/bin/ty";
+                  arguments = [ "server" ];
+                };
+                languages.Python = {
+                  language_servers = [
+                    "ty"
+                    "!pylsp"
+                    "!pyright"
+                    "!basedpyright"
+                  ];
+                  formatter.external = {
+                    command = "${python.package}/bin/ruff";
+                    args = [
+                      "format"
+                      "--stdin-filename"
+                      "{buffer_path}"
+                    ];
+                  };
+                };
+              };
             }
           ];
 
           pre-commit.settings.hooks = {
             nixfmt.enable = true;
+            taplo.enable = true;
             yamlfmt.enable = true;
             yamllint.enable = true;
+            ruff = {
+              enable = true;
+              package = python.package;
+            };
           };
 
           devShells = {
@@ -55,6 +92,11 @@
                 ]
                 ++ config.pre-commit.settings.enabledPackages;
 
+              buildInputs = with pkgs; [
+                ty
+                python.package
+              ];
+
               shellHook = ''
                 ${config.files.writer.drv}/bin/write-files
                 ${config.pre-commit.shellHook}
@@ -62,21 +104,5 @@
             };
           };
         };
-      flake = {
-        templates = {
-          default = {
-            path = ./template/default;
-            description = ''
-              A minimal flake template including git hooks and file management.
-            '';
-          };
-          python = {
-            path = ./template/python;
-            description = ''
-              A Python development flake template including git hooks and file management.
-            '';
-          };
-        };
-      };
     };
 }
