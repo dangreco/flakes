@@ -1,5 +1,5 @@
 {
-  description = "dangreco/env environment";
+  description = "Description for the project";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -7,6 +7,10 @@
     files.url = "github:mightyiam/files";
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -27,21 +31,45 @@
       perSystem =
         {
           config,
+          system,
           pkgs,
           ...
         }:
+        let
+          pkgs' = import inputs.nixpkgs {
+            inherit system;
+            overlays = [ (import inputs.rust-overlay) ];
+          };
+
+          rust = rec {
+            version = "1.91.1";
+            package = pkgs'.rust-bin.stable.${version}.default.override {
+              extensions = [
+                "rust-src"
+                "clippy"
+                "rustfmt"
+                "rust-analyzer"
+              ];
+            };
+          };
+        in
         {
+          _module.args.pkgs = pkgs';
+
           files.files = [
             {
               path_ = ".zed/settings.json";
-              drv = pkgs.writers.writeJSON "settings.json" { };
+              drv = pkgs.writers.writeJSON "settings.json" {
+                lsp.rust-analyzer.binary = "${rust.package}/bin/rust-analyzer";
+              };
             }
           ];
 
           pre-commit.settings.hooks = {
             nixfmt.enable = true;
-            yamlfmt.enable = true;
-            yamllint.enable = true;
+            taplo.enable = true;
+            clippy.enable = true;
+            rustfmt.enable = true;
           };
 
           devShells = {
@@ -55,6 +83,9 @@
                 ]
                 ++ config.pre-commit.settings.enabledPackages;
 
+              buildInputs = [ rust.package ];
+              nativeBuildInputs = with pkgs; [ openssl ];
+
               shellHook = ''
                 ${config.files.writer.drv}/bin/write-files
                 ${config.pre-commit.shellHook}
@@ -62,27 +93,5 @@
             };
           };
         };
-      flake = {
-        templates = {
-          default = {
-            path = ./template/default;
-            description = ''
-              A minimal flake template including git hooks and file management.
-            '';
-          };
-          python = {
-            path = ./template/python;
-            description = ''
-              A Python development flake template including git hooks and file management.
-            '';
-          };
-          rust = {
-            path = ./template/rust;
-            description = ''
-              A Rust development flake template including git hooks and file management.
-            '';
-          };
-        };
-      };
     };
 }
