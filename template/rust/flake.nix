@@ -61,7 +61,7 @@
             {
               path_ = ".zed/settings.json";
               drv = pkgs.writers.writeJSON "settings.json" {
-                lsp.rust-analyzer.binary = "${rust.package}/bin/rust-analyzer";
+                lsp.rust-analyzer.binary.path = "${rust.package}/bin/rust-analyzer";
               };
             }
           ];

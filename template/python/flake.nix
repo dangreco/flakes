@@ -47,8 +47,10 @@
               path_ = ".zed/settings.json";
               drv = pkgs.writers.writeJSON "settings.json" {
                 lsp.ty = {
-                  binary = "${pkgs.ty}/bin/ty";
-                  arguments = [ "server" ];
+                  binary = {
+                    path = "${pkgs.ty}/bin/ty";
+                    arguments = [ "server" ];
+                  };
                 };
                 languages.Python = {
                   language_servers = [
