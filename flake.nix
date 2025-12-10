@@ -70,6 +70,12 @@
               A minimal flake template including git hooks and file management.
             '';
           };
+          deno = {
+            path = ./template/deno;
+            description = ''
+              A Deno development flake template including git hooks and file management.
+            '';
+          };
           python = {
             path = ./template/python;
             description = ''
