@@ -52,6 +52,13 @@
                   ${config.pre-commit.shellHook}
                 '';
               };
+
+            ci = pkgs.mkShell {
+              packages = with pkgs; [ ] ++ config.pre-commit.settings.enabledPackages;
+              shellHook = ''
+                ${config.pre-commit.shellHook}
+              '';
+            };
           };
         };
     };
