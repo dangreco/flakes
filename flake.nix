@@ -4,7 +4,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    files.url = "github:mightyiam/files";
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -14,10 +13,7 @@
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [
-        inputs.files.flakeModules.default
-        inputs.git-hooks.flakeModule
-      ];
+      imports = [ inputs.git-hooks.flakeModule ];
       systems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -31,13 +27,6 @@
           ...
         }:
         {
-          files.files = [
-            {
-              path_ = ".zed/settings.json";
-              drv = pkgs.writers.writeJSON "settings.json" { };
-            }
-          ];
-
           pre-commit.settings.hooks = {
             nixfmt.enable = true;
             yamlfmt.enable = true;
@@ -45,21 +34,26 @@
           };
 
           devShells = {
-            default = pkgs.mkShell {
-              packages =
-                with pkgs;
-                [
-                  nil
-                  nixd
-                  nixfmt
-                ]
-                ++ config.pre-commit.settings.enabledPackages;
+            default =
+              let
+                __zed = pkgs.writers.writeJSON "settings.json" { };
+              in
+              pkgs.mkShell {
+                packages =
+                  with pkgs;
+                  [
+                    nil
+                    nixd
+                    nixfmt
+                  ]
+                  ++ config.pre-commit.settings.enabledPackages;
 
-              shellHook = ''
-                ${config.files.writer.drv}/bin/write-files
-                ${config.pre-commit.shellHook}
-              '';
-            };
+                shellHook = ''
+                  mkdir -p .zed
+                  ln -sf ${__zed} .zed/settings.json
+                  ${config.pre-commit.shellHook}
+                '';
+              };
           };
         };
       flake = {
