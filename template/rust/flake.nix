@@ -55,6 +55,8 @@
 
           pre-commit.settings.hooks = {
             nixfmt.enable = true;
+            yamlfmt.enable = true;
+            yamllint.enable = true;
             taplo.enable = true;
             _rustfmt = {
               enable = true;
@@ -99,9 +101,13 @@
                 '';
               };
 
-            build = pkgs.mkShell {
-              buildInputs = [ rust.package ];
+            ci = pkgs.mkShell {
+              packages = with pkgs; [ ] ++ config.pre-commit.settings.enabledPackages;
+              buildInputs = with pkgs; [ rust.package ];
               nativeBuildInputs = with pkgs; [ openssl ];
+              shellHook = ''
+                ${config.pre-commit.shellHook}
+              '';
             };
           };
         };

@@ -29,6 +29,8 @@
         {
           pre-commit.settings.hooks = {
             nixfmt.enable = true;
+            yamlfmt.enable = true;
+            yamllint.enable = true;
           };
 
           devShells = {

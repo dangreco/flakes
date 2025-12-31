@@ -40,9 +40,9 @@
         {
           pre-commit.settings.hooks = {
             nixfmt.enable = true;
-            taplo.enable = true;
             yamlfmt.enable = true;
             yamllint.enable = true;
+            taplo.enable = true;
             ruff = {
               enable = true;
               package = python.package;
@@ -99,11 +99,15 @@
                 '';
               };
 
-            build = pkgs.mkShell {
+            ci = pkgs.mkShell {
+              packages = with pkgs; [ ] ++ config.pre-commit.settings.enabledPackages;
               buildInputs = with pkgs; [
                 ty
                 python.package
               ];
+              shellHook = ''
+                ${config.pre-commit.shellHook}
+              '';
             };
           };
         };

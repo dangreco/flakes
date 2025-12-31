@@ -29,6 +29,8 @@
         {
           pre-commit.settings.hooks = {
             nixfmt.enable = true;
+            yamlfmt.enable = true;
+            yamllint.enable = true;
             denolint.enable = true;
             denofmt.enable = true;
           };
@@ -88,6 +90,14 @@
                   ${config.pre-commit.shellHook}
                 '';
               };
+
+            ci = pkgs.mkShell {
+              packages = with pkgs; [ ] ++ config.pre-commit.settings.enabledPackages;
+              buildInputs = with pkgs; [ deno ];
+              shellHook = ''
+                ${config.pre-commit.shellHook}
+              '';
+            };
           };
         };
     };
