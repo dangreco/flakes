@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  default:
+    desc: List tasks
+    silent: true
+    cmds:
+      - task -t tasks/deno.yml --list
+
+  clean:
+    desc: Clean build artifacts
+    silent: true
+    deps: []
+    cmds: []
+
+  build:
+    desc: Build the project
+    silent: true
+    deps: []
+    cmds: []
+
+  test:
+    desc: Test the project
+    silent: true
+    deps: []
+    cmds: []
+
+  check:
+    desc: Check for linting/formatting errors
+    silent: true
+    cmds:
+      - deno lint --permit-no-files .
+      - deno fmt --check --permit-no-files .
+
+  fix:
+    desc: Fix linting/formatting errors
+    silent: true
+    cmds:
+      - deno lint --fix --permit-no-files .
+      - deno fmt --permit-no-files .

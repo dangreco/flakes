@@ -1,0 +1,43 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  default:
+    desc: List tasks
+    silent: true
+    cmds:
+      - task -t tasks/python.yml --list
+
+  clean:
+    desc: Clean build artifacts
+    silent: true
+    deps: []
+    cmds: []
+
+  build:
+    desc: Build the project
+    silent: true
+    deps: []
+    cmds: []
+
+  test:
+    desc: Test the project
+    silent: true
+    deps: []
+    cmds: []
+
+  check:
+    desc: Check for linting/formatting errors
+    silent: true
+    cmds:
+      - ty check --error-on-warning .
+      - ruff check .
+      - ruff format --check .
+
+  fix:
+    desc: Fix linting/formatting errors
+    silent: true
+    cmds:
+      - ruff check --fix .
+      - ruff format .

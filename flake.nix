@@ -45,6 +45,7 @@
                     nil
                     nixd
                     nixfmt
+                    pinact
                   ]
                   ++ config.pre-commit.settings.enabledPackages;
 

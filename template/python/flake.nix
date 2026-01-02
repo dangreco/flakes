@@ -84,6 +84,7 @@
                     nil
                     nixd
                     nixfmt
+                    go-task
                   ]
                   ++ config.pre-commit.settings.enabledPackages;
 
@@ -100,7 +101,12 @@
               };
 
             ci = pkgs.mkShell {
-              packages = with pkgs; [ ] ++ config.pre-commit.settings.enabledPackages;
+              packages =
+                with pkgs;
+                [
+                  go-task
+                ]
+                ++ config.pre-commit.settings.enabledPackages;
               buildInputs = with pkgs; [
                 ty
                 python.package
