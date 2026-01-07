@@ -68,10 +68,11 @@
                     ];
                     formatter.external = {
                       command = "${python.package}/bin/ruff";
-                      args = [
+                      arguments = [
                         "format"
                         "--stdin-filename"
                         "{buffer_path}"
+                        "-"
                       ];
                     };
                   };
