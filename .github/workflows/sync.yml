@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -30,18 +31,12 @@ jobs:
             cp .github/workflows/nix.yml "template/$tpl/.github/workflows/"
           done
 
-      - name: Commit changes
-        id: auto-commit-action
-        uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
-        with:
-          branch: chore/sync-templates
-          commit_message: "chore: sync template workflows"
-
       - name: Create PR
-        if: steps.auto-commit-action.outputs.changes_detected == 'true'
+        id: create-pr
         uses: peter-evans/create-pull-request@98357b18bf14b5342f975ff684046ec3b2a07725 # v8.0.0
         with:
           branch: chore/sync-templates
+          commit-message: "chore: sync template workflows"
           title: "chore: sync template workflows"
           body: "Automated sync of template workflows"
           base: main
