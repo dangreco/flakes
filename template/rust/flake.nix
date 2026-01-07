@@ -39,7 +39,7 @@
           };
 
           rust = rec {
-            version = "1.91.1";
+            version = "1.92.0";
             package = pkgs'.rust-bin.stable.${version}.default.override {
               extensions = [
                 "rust-src"
