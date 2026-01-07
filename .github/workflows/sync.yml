@@ -45,6 +45,10 @@ jobs:
           title: "chore: sync template workflows"
           body: "Automated sync of template workflows"
           base: main
+          delete-branch: true
 
-      - if: steps.auto-commit-action.outputs.changes_detected == 'false'
-        run: echo "No Changes!"
+      - name: Enable auto-merge
+        if: steps.create-pr.outputs.pull-request-number
+        run: gh pr merge --auto --squash "${{ steps.create-pr.outputs.pull-request-number }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
