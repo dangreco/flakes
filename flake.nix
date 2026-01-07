@@ -56,6 +56,20 @@
                   ${config.pre-commit.shellHook}
                 '';
               };
+
+            ci = pkgs.mkShell {
+              packages =
+                with pkgs;
+                [
+                  pinact
+                  go-task
+                ]
+                ++ config.pre-commit.settings.enabledPackages;
+
+              shellHook = ''
+                ${config.pre-commit.shellHook}
+              '';
+            };
           };
         };
       flake = {
