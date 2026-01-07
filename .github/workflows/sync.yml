@@ -1,0 +1,35 @@
+---
+# yaml-language-server: $schema=https://www.schemastore.org/github-workflow.json
+# yamllint disable rule:line-length
+# yamllint disable rule:comments
+name: Sync
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/ci.yml"
+      - ".github/workflows/nix.yml"
+  workflow_dispatch:
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: true
+
+      - name: Sync workflows to templates
+        run: |
+          for template in template/*; do
+            tpl=$(basename "$template")
+            cp .github/workflows/ci.yml "template/$tpl/.github/workflows/"
+            cp .github/workflows/nix.yml "template/$tpl/.github/workflows/"
+          done
+
+      - uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
+        with:
+          commit_message: "chore: sync template workflows"

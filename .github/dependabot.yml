@@ -7,23 +7,3 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-
-  - package-ecosystem: "github-actions"
-    directory: "/template/default"
-    schedule:
-      interval: "weekly"
-
-  - package-ecosystem: "github-actions"
-    directory: "/template/deno"
-    schedule:
-      interval: "weekly"
-
-  - package-ecosystem: "github-actions"
-    directory: "/template/python"
-    schedule:
-      interval: "weekly"
-
-  - package-ecosystem: "github-actions"
-    directory: "/template/rust"
-    schedule:
-      interval: "weekly"
