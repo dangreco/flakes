@@ -9,8 +9,8 @@ tasks:
     cmds:
       - task -t tasks/toml.yml --list
 
-  check:
-    desc: Check TOML files
+  lint:
+    desc: Lint TOML files
     silent: true
     cmds:
       - taplo check .

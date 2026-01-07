@@ -34,12 +34,12 @@ tasks:
       - python:test
     cmds: []
 
-  check:
+  lint:
     desc: Check for linting/formatting errors
     silent: true
     deps:
-      - yaml:check
-      - python:check
+      - yaml:lint
+      - python:lint
     cmds: []
 
   fix:

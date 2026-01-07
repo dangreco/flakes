@@ -27,7 +27,7 @@ tasks:
     deps: []
     cmds: []
 
-  check:
+  lint:
     desc: Check for linting/formatting errors
     silent: true
     cmds:

@@ -46,6 +46,7 @@
                     nixd
                     nixfmt
                     pinact
+                    go-task
                   ]
                   ++ config.pre-commit.settings.enabledPackages;
 

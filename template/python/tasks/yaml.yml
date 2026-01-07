@@ -9,8 +9,8 @@ tasks:
     cmds:
       - task -t tasks/yaml.yml --list
 
-  check:
-    desc: Check YAML files
+  lint:
+    desc: Lint YAML files
     silent: true
     cmds:
       - yamllint --strict .

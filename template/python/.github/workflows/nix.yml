@@ -10,6 +10,7 @@ on:
       - "flake.lock"
 jobs:
   check:
+    name: Check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -17,11 +18,6 @@ jobs:
 
       - name: Install Nix
         uses: DeterminateSystems/determinate-nix-action@9596b92e70cbf68a494a2b0273cb5b680184f5fc # v3.13.1
-
-      - name: Setup Nix cache
-        uses: DeterminateSystems/magic-nix-cache-action@565684385bcd71bad329742eefe8d12f2e765b39 # v13
-        with:
-          use-flakehub: false
 
       - name: Check
         run: nix flake check --all-systems --no-build
