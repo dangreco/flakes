@@ -98,6 +98,12 @@
               A Rust development flake template including git hooks and file management.
             '';
           };
+          node = {
+            path = ./template/node;
+            description = ''
+              A Node.js development flake template including git hooks and file management.
+            '';
+          };
         };
       };
     };
