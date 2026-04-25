@@ -44,8 +44,8 @@
                       language_servers = [
                         "oxfmt"
                         "oxlint"
+                        "vtsls"
                         "!typescript-language-server"
-                        "!vtsls"
                         "!eslint"
                         "!biome"
                       ];
