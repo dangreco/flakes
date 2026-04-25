@@ -27,16 +27,18 @@ tasks:
     deps: []
     cmds: []
 
-  lint:
+  check:
     desc: Check for linting/formatting errors
     silent: true
     cmds:
       - deno lint --permit-no-files .
       - deno fmt --check --permit-no-files .
 
-  fix:
+  format:
     desc: Fix linting/formatting errors
     silent: true
+    aliases:
+      - fmt
     cmds:
       - deno lint --fix --permit-no-files .
       - deno fmt --permit-no-files .

@@ -9,15 +9,17 @@ tasks:
     cmds:
       - task -t tasks/yaml.yml --list
 
-  lint:
-    desc: Lint YAML files
+  check:
+    desc: Check YAML files for linting/formatting errors
     silent: true
     cmds:
       - yamllint --strict .
       - yamlfmt -lint .
 
-  fix:
-    desc: Fix YAML files
+  format:
+    desc: Fix linting/formatting errors in YAML files
     silent: true
+    aliases:
+      - fmt
     cmds:
       - yamlfmt -q .

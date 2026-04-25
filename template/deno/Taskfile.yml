@@ -34,18 +34,20 @@ tasks:
       - deno:test
     cmds: []
 
-  lint:
+  check:
     desc: Check for linting/formatting errors
     silent: true
     deps:
-      - yaml:lint
-      - deno:lint
+      - yaml:check
+      - deno:check
     cmds: []
 
-  fix:
+  format:
     desc: Fix linting/formatting errors
     silent: true
+    aliases:
+      - fmt
     deps:
-      - yaml:fix
-      - deno:fix
+      - yaml:format
+      - deno:format
     cmds: []
