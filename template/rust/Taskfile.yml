@@ -35,20 +35,22 @@ tasks:
       - rust:test
     cmds: []
 
-  lint:
+  check:
     desc: Check for linting/formatting errors
     silent: true
     deps:
-      - yaml:lint
-      - toml:lint
-      - rust:lint
+      - yaml:check
+      - toml:check
+      - rust:check
     cmds: []
 
   fix:
     desc: Fix linting/formatting errors
     silent: true
+    aliases:
+      - fmt
     deps:
-      - yaml:fix
-      - toml:fix
-      - rust:fix
+      - yaml:format
+      - toml:format
+      - rust:format
     cmds: []
