@@ -47,6 +47,7 @@
                         "!typescript-language-server"
                         "!vtsls"
                         "!eslint"
+                        "!biome"
                       ];
                       formatter = [
                         {
@@ -66,8 +67,14 @@
                     };
                   in
                   pkgs.writers.writeJSON "settings.json" {
-                    lsp.oxlint.binary.path = "${pkgs.oxlint}/bin/oxlint";
-                    lsp.oxfmt.binary.path = "${pkgs.oxfmt}/bin/oxfmt";
+                    lsp.oxlint.binary = {
+                      path = "${pkgs.oxlint}/bin/oxlint";
+                      arguments = [ "--lsp" ];
+                    };
+                    lsp.oxfmt.binary = {
+                      path = "${pkgs.oxfmt}/bin/oxfmt";
+                      arguments = [ "--lsp" ];
+                    };
 
                     languages.JavaScript = defaults;
                     languages.JSX = defaults;
