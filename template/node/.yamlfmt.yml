@@ -1,0 +1,8 @@
+---
+exclude:
+  - pnpm-lock.yaml
+  - node_modules/**/*
+  - .pre-commit-config.yaml
+formatter:
+  include_document_start: true
+  retain_line_breaks_single: true

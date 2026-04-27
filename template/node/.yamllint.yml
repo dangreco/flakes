@@ -1,0 +1,9 @@
+---
+extends: default
+ignore:
+  - pnpm-lock.yaml
+  - node_modules/**/*
+  - .pre-commit-config.yaml
+rules:
+  truthy:
+    check-keys: false

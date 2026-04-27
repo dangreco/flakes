@@ -30,16 +30,18 @@ tasks:
     deps: []
     cmds: []
 
-  lint:
+  check:
     desc: Check for linting/formatting errors
     silent: true
     deps:
-      - yaml:lint
+      - yaml:check
     cmds: []
 
-  fix:
+  format:
     desc: Fix linting/formatting errors
     silent: true
+    aliases:
+      - fmt
     deps:
-      - yaml:fix
+      - yaml:format
     cmds: []

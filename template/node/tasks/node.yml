@@ -2,18 +2,15 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
-includes:
-  yaml: ./tasks/yaml.yml
-
 tasks:
   default:
     desc: List tasks
     silent: true
     cmds:
-      - task --list
+      - task -t tasks/deno.yml --list
 
   clean:
-    desc: Clean the project
+    desc: Clean build artifacts
     silent: true
     deps: []
     cmds: []
@@ -33,15 +30,15 @@ tasks:
   check:
     desc: Check for linting/formatting errors
     silent: true
-    deps:
-      - yaml:check
-    cmds: []
+    cmds:
+      - oxlint .
+      - oxfmt --check .
 
   format:
     desc: Fix linting/formatting errors
     silent: true
     aliases:
       - fmt
-    deps:
-      - yaml:format
-    cmds: []
+    cmds:
+      - oxlint --fix .
+      - oxfmt --write .

@@ -27,16 +27,18 @@ tasks:
     deps: []
     cmds: []
 
-  lint:
+  check:
     desc: Check for linting/formatting errors
     silent: true
     cmds:
       - cargo clippy
       - cargo fmt --check --all
 
-  fix:
+  format:
     desc: Fix linting/formatting errors
     silent: true
+    aliases:
+      - fmt
     cmds:
       - cargo clippy --fix
       - cargo fmt --all
