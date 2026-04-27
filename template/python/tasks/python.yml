@@ -27,7 +27,7 @@ tasks:
     deps: []
     cmds: []
 
-  lint:
+  check:
     desc: Check for linting/formatting errors
     silent: true
     cmds:
@@ -35,9 +35,11 @@ tasks:
       - ruff check .
       - ruff format --check .
 
-  fix:
+  format:
     desc: Fix linting/formatting errors
     silent: true
+    aliases:
+      - fmt
     cmds:
       - ruff check --fix .
       - ruff format .

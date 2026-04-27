@@ -9,14 +9,16 @@ tasks:
     cmds:
       - task -t tasks/toml.yml --list
 
-  lint:
+  check:
     desc: Lint TOML files
     silent: true
     cmds:
       - taplo check .
       - taplo format --check .
-  fix:
+  format:
     desc: Fix TOML files
     silent: true
+    aliases:
+      - fmt
     cmds:
       - taplo format .
