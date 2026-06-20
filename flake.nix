@@ -104,6 +104,18 @@
               A Node.js development flake template including git hooks and file management.
             '';
           };
+          c = {
+            path = ./template/c;
+            description = ''
+              A C development flake template including git hooks and file management.
+            '';
+          };
+          cpp = {
+            path = ./template/cpp;
+            description = ''
+              A C++ development flake template including git hooks and file management.
+            '';
+          };
           ocaml = {
             path = ./template/ocaml;
             description = ''
