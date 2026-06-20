@@ -122,6 +122,12 @@
               An OCaml development flake template including git hooks and file management.
             '';
           };
+          haskell = {
+            path = ./template/haskell;
+            description = ''
+              A Haskell development flake template including git hooks and file management.
+            '';
+          };
         };
       };
     };

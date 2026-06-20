@@ -1,0 +1,25 @@
+---
+name: app
+version: 0.1.0
+license: BSD-3-Clause
+
+dependencies:
+  - base
+
+library:
+  source-dirs: src
+
+executables:
+  app:
+    main: Main.hs
+    source-dirs: app
+    dependencies:
+      - app
+
+tests:
+  spec:
+    main: Spec.hs
+    source-dirs: test
+    dependencies:
+      - app
+      - hspec

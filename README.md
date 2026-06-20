@@ -76,6 +76,14 @@ An OCaml development flake template.
 nix flake init --refresh -t github:dangreco/flakes#ocaml
 ```
 
+### Haskell
+
+A Haskell development flake template.
+
+```bash
+nix flake init --refresh -t github:dangreco/flakes#haskell
+```
+
 ## License
 
 See [LICENSE](LICENSE) for details.
