@@ -52,6 +52,22 @@ A Rust development flake template.
 nix flake init --refresh -t github:dangreco/flakes#rust
 ```
 
+### C
+
+A C development flake template.
+
+```bash
+nix flake init --refresh -t github:dangreco/flakes#c
+```
+
+### C++
+
+A C++ development flake template.
+
+```bash
+nix flake init --refresh -t github:dangreco/flakes#cpp
+```
+
 ## License
 
 See [LICENSE](LICENSE) for details.
