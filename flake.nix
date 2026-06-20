@@ -116,6 +116,12 @@
               A C++ development flake template including git hooks and file management.
             '';
           };
+          ocaml = {
+            path = ./template/ocaml;
+            description = ''
+              An OCaml development flake template including git hooks and file management.
+            '';
+          };
         };
       };
     };

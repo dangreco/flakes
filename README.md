@@ -68,6 +68,14 @@ A C++ development flake template.
 nix flake init --refresh -t github:dangreco/flakes#cpp
 ```
 
+### OCaml
+
+An OCaml development flake template.
+
+```bash
+nix flake init --refresh -t github:dangreco/flakes#ocaml
+```
+
 ## License
 
 See [LICENSE](LICENSE) for details.

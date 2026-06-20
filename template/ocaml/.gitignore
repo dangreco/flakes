@@ -1,0 +1,14 @@
+/.zed
+/.pre-commit-config.yaml
+/.envrc
+/.direnv
+
+# Dune build artifacts
+/_build/
+
+# Local opam switch
+_opam/
+
+# Generated / misc
+*.install
+*.merlin
