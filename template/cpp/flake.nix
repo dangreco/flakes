@@ -1,5 +1,5 @@
 {
-  description = "dangreco/env environment";
+  description = "Description for the project";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -31,12 +31,38 @@
             nixfmt.enable = true;
             yamlfmt.enable = true;
             yamllint.enable = true;
+            clang-format = {
+              enable = true;
+              types_or = [
+                "c"
+                "c++"
+              ];
+            };
           };
 
           devShells = {
             default =
               let
-                __zed = pkgs.writers.writeJSON "settings.json" { };
+                __zed =
+                  let
+                    defaults = {
+                      language_servers = [ "clangd" ];
+                      formatter = "language_server";
+                      format_on_save = "on";
+                    };
+                  in
+                  pkgs.writers.writeJSON "settings.json" {
+                    lsp.clangd.binary = {
+                      path = "${pkgs.clang-tools}/bin/clangd";
+                      # Let clangd query the Nix compiler wrapper for its system
+                      # include paths (libstdc++, glibc, etc.), which Nix injects
+                      # via the environment rather than into compile_commands.json.
+                      arguments = [ "--query-driver=**/bin/clang*" ];
+                    };
+
+                    languages.C = defaults;
+                    languages."C++" = defaults;
+                  };
               in
               pkgs.mkShell {
                 packages =
@@ -45,12 +71,19 @@
                     nil
                     nixd
                     nixfmt
-                    pinact
                     go-task
+                    clang
+                    clang-tools
+                    cmake
+                    ninja
+                    pkg-config
+                    gtest
                   ]
                   ++ config.pre-commit.settings.enabledPackages;
 
                 shellHook = ''
+                  export CC=clang
+                  export CXX=clang++
                   mkdir -p .zed
                   ln -sf ${__zed} .zed/settings.json
                   ${config.pre-commit.shellHook}
@@ -61,62 +94,22 @@
               packages =
                 with pkgs;
                 [
-                  pinact
                   go-task
+                  clang
+                  clang-tools
+                  cmake
+                  ninja
+                  pkg-config
+                  gtest
                 ]
                 ++ config.pre-commit.settings.enabledPackages;
-
               shellHook = ''
+                export CC=clang
+                export CXX=clang++
                 ${config.pre-commit.shellHook}
               '';
             };
           };
         };
-      flake = {
-        templates = {
-          default = {
-            path = ./template/default;
-            description = ''
-              A minimal flake template including git hooks and file management.
-            '';
-          };
-          deno = {
-            path = ./template/deno;
-            description = ''
-              A Deno development flake template including git hooks and file management.
-            '';
-          };
-          python = {
-            path = ./template/python;
-            description = ''
-              A Python development flake template including git hooks and file management.
-            '';
-          };
-          rust = {
-            path = ./template/rust;
-            description = ''
-              A Rust development flake template including git hooks and file management.
-            '';
-          };
-          node = {
-            path = ./template/node;
-            description = ''
-              A Node.js development flake template including git hooks and file management.
-            '';
-          };
-          c = {
-            path = ./template/c;
-            description = ''
-              A C development flake template including git hooks and file management.
-            '';
-          };
-          cpp = {
-            path = ./template/cpp;
-            description = ''
-              A C++ development flake template including git hooks and file management.
-            '';
-          };
-        };
-      };
     };
 }

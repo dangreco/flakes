@@ -1,0 +1,21 @@
+/.zed
+/.pre-commit-config.yaml
+/.envrc
+/.direnv
+
+# Build
+/build/
+compile_commands.json
+
+# Object files
+*.o
+*.obj
+
+# Libraries
+*.a
+*.so
+*.dylib
+
+# Executables
+*.out
+*.exe
