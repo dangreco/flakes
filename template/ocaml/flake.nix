@@ -1,5 +1,5 @@
 {
-  description = "dangreco/env environment";
+  description = "Description for the project";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -31,12 +31,26 @@
             nixfmt.enable = true;
             yamlfmt.enable = true;
             yamllint.enable = true;
+            _ocamlformat = {
+              enable = true;
+              name = "ocamlformat";
+              files = "\\.mli?$";
+              entry = "${pkgs.ocamlformat}/bin/ocamlformat --inplace";
+              pass_filenames = true;
+            };
           };
 
           devShells = {
             default =
               let
-                __zed = pkgs.writers.writeJSON "settings.json" { };
+                __zed = pkgs.writers.writeJSON "settings.json" {
+                  lsp.ocaml-lsp.binary.path = "${pkgs.ocamlPackages.ocaml-lsp}/bin/ocamllsp";
+
+                  languages.OCaml = {
+                    formatter = "language_server";
+                    format_on_save = "on";
+                  };
+                };
               in
               pkgs.mkShell {
                 packages =
@@ -45,10 +59,17 @@
                     nil
                     nixd
                     nixfmt
-                    pinact
                     go-task
+                    ocaml
+                    dune_3
+                    ocamlformat
+                    ocamlPackages.ocaml-lsp
+                    ocamlPackages.findlib
+                    ocamlPackages.utop
                   ]
                   ++ config.pre-commit.settings.enabledPackages;
+
+                buildInputs = with pkgs.ocamlPackages; [ alcotest ];
 
                 shellHook = ''
                   mkdir -p .zed
@@ -61,10 +82,15 @@
               packages =
                 with pkgs;
                 [
-                  pinact
                   go-task
+                  ocaml
+                  dune_3
+                  ocamlformat
+                  ocamlPackages.findlib
                 ]
                 ++ config.pre-commit.settings.enabledPackages;
+
+              buildInputs = with pkgs.ocamlPackages; [ alcotest ];
 
               shellHook = ''
                 ${config.pre-commit.shellHook}
@@ -72,45 +98,5 @@
             };
           };
         };
-      flake = {
-        templates = {
-          default = {
-            path = ./template/default;
-            description = ''
-              A minimal flake template including git hooks and file management.
-            '';
-          };
-          deno = {
-            path = ./template/deno;
-            description = ''
-              A Deno development flake template including git hooks and file management.
-            '';
-          };
-          python = {
-            path = ./template/python;
-            description = ''
-              A Python development flake template including git hooks and file management.
-            '';
-          };
-          rust = {
-            path = ./template/rust;
-            description = ''
-              A Rust development flake template including git hooks and file management.
-            '';
-          };
-          node = {
-            path = ./template/node;
-            description = ''
-              A Node.js development flake template including git hooks and file management.
-            '';
-          };
-          ocaml = {
-            path = ./template/ocaml;
-            description = ''
-              An OCaml development flake template including git hooks and file management.
-            '';
-          };
-        };
-      };
     };
 }

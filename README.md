@@ -52,6 +52,14 @@ A Rust development flake template.
 nix flake init --refresh -t github:dangreco/flakes#rust
 ```
 
+### OCaml
+
+An OCaml development flake template.
+
+```bash
+nix flake init --refresh -t github:dangreco/flakes#ocaml
+```
+
 ## License
 
 See [LICENSE](LICENSE) for details.
