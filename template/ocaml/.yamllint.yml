@@ -1,0 +1,8 @@
+---
+extends: default
+ignore:
+  - _build/
+  - .pre-commit-config.yaml
+rules:
+  truthy:
+    check-keys: false

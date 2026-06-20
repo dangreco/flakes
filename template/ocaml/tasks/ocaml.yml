@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  default:
+    desc: List tasks
+    silent: true
+    cmds:
+      - task -t tasks/ocaml.yml --list
+
+  clean:
+    desc: Clean build artifacts
+    silent: true
+    cmds:
+      - dune clean
+
+  build:
+    desc: Build the project
+    silent: true
+    cmds:
+      - dune build
+
+  test:
+    desc: Test the project
+    silent: true
+    cmds:
+      - dune runtest
+
+  check:
+    desc: Check for linting/formatting errors
+    silent: true
+    cmds:
+      - dune build @fmt
+
+  format:
+    desc: Fix linting/formatting errors
+    silent: true
+    aliases:
+      - fmt
+    cmds:
+      - dune fmt
