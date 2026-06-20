@@ -1,5 +1,5 @@
 {
-  description = "dangreco/env environment";
+  description = "Description for the project";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -26,17 +26,33 @@
           pkgs,
           ...
         }:
+        let
+          # GHC with the project's dependencies in its package database, so cabal
+          # resolves them without needing the Hackage index.
+          ghc = pkgs.haskellPackages.ghcWithPackages (
+            ps: with ps; [
+              hspec
+              hspec-discover
+            ]
+          );
+        in
         {
           pre-commit.settings.hooks = {
             nixfmt.enable = true;
             yamlfmt.enable = true;
             yamllint.enable = true;
+            ormolu.enable = true;
+            hlint.enable = true;
           };
 
           devShells = {
             default =
               let
-                __zed = pkgs.writers.writeJSON "settings.json" { };
+                __zed = pkgs.writers.writeJSON "settings.json" {
+                  lsp.hls.initialization_options.haskell.formattingProvider = "ormolu";
+
+                  languages.Haskell.format_on_save = "on";
+                };
               in
               pkgs.mkShell {
                 packages =
@@ -45,8 +61,14 @@
                     nil
                     nixd
                     nixfmt
-                    pinact
                     go-task
+                    ghc
+                    cabal-install
+                    haskell-language-server
+                    ormolu
+                    hlint
+                    hpack
+                    haskellPackages.hspec-discover
                   ]
                   ++ config.pre-commit.settings.enabledPackages;
 
@@ -61,8 +83,13 @@
               packages =
                 with pkgs;
                 [
-                  pinact
                   go-task
+                  ghc
+                  cabal-install
+                  ormolu
+                  hlint
+                  hpack
+                  haskellPackages.hspec-discover
                 ]
                 ++ config.pre-commit.settings.enabledPackages;
 
@@ -72,45 +99,5 @@
             };
           };
         };
-      flake = {
-        templates = {
-          default = {
-            path = ./template/default;
-            description = ''
-              A minimal flake template including git hooks and file management.
-            '';
-          };
-          deno = {
-            path = ./template/deno;
-            description = ''
-              A Deno development flake template including git hooks and file management.
-            '';
-          };
-          python = {
-            path = ./template/python;
-            description = ''
-              A Python development flake template including git hooks and file management.
-            '';
-          };
-          rust = {
-            path = ./template/rust;
-            description = ''
-              A Rust development flake template including git hooks and file management.
-            '';
-          };
-          node = {
-            path = ./template/node;
-            description = ''
-              A Node.js development flake template including git hooks and file management.
-            '';
-          };
-          haskell = {
-            path = ./template/haskell;
-            description = ''
-              A Haskell development flake template including git hooks and file management.
-            '';
-          };
-        };
-      };
     };
 }

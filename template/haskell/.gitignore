@@ -1,0 +1,15 @@
+/.zed
+/.pre-commit-config.yaml
+/.envrc
+/.direnv
+
+# Cabal build artifacts
+dist-newstyle/
+*.hi
+*.o
+
+# hpack-generated cabal file
+*.cabal
+
+# GHC environment files
+.ghc.environment.*

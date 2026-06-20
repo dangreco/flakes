@@ -1,0 +1,53 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+includes:
+  yaml: ./tasks/yaml.yml
+  haskell: ./tasks/haskell.yml
+
+tasks:
+  default:
+    desc: List tasks
+    silent: true
+    cmds:
+      - task --list
+
+  clean:
+    desc: Clean the project
+    silent: true
+    deps:
+      - haskell:clean
+    cmds: []
+
+  build:
+    desc: Build the project
+    silent: true
+    deps:
+      - haskell:build
+    cmds: []
+
+  test:
+    desc: Test the project
+    silent: true
+    deps:
+      - haskell:test
+    cmds: []
+
+  check:
+    desc: Check for linting/formatting errors
+    silent: true
+    deps:
+      - yaml:check
+      - haskell:check
+    cmds: []
+
+  format:
+    desc: Fix linting/formatting errors
+    silent: true
+    aliases:
+      - fmt
+    deps:
+      - yaml:format
+      - haskell:format
+    cmds: []

@@ -1,0 +1,8 @@
+---
+extends: default
+ignore:
+  - dist-newstyle/
+  - .pre-commit-config.yaml
+rules:
+  truthy:
+    check-keys: false

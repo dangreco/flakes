@@ -1,0 +1,47 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+# yamllint disable rule:line-length
+version: "3"
+
+tasks:
+  default:
+    desc: List tasks
+    silent: true
+    cmds:
+      - task -t tasks/haskell.yml --list
+
+  clean:
+    desc: Clean build artifacts
+    silent: true
+    cmds:
+      - cabal clean
+
+  build:
+    desc: Build the project
+    silent: true
+    cmds:
+      - hpack
+      - cabal build
+
+  test:
+    desc: Test the project
+    silent: true
+    cmds:
+      - hpack
+      - cabal test --test-show-details=direct
+
+  check:
+    desc: Check for linting/formatting errors
+    silent: true
+    cmds:
+      - hpack
+      - hlint src app test
+      - ormolu --mode check $(find src app test -type f -name '*.hs')
+
+  format:
+    desc: Fix linting/formatting errors
+    silent: true
+    aliases:
+      - fmt
+    cmds:
+      - ormolu --mode inplace $(find src app test -type f -name '*.hs')
